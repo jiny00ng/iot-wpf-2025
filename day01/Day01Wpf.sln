@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBasicApp01", "..\..\iot-winapp-2025\day01\Day01Wpf\WpfBasicApp01\WpfBasicApp01.csproj", "{B8359E8F-45CF-4BAC-BF6D-7EEA51043892}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBasicApp02", "..\..\iot-winapp-2025\day01\Day01Wpf\WpfBasicApp02\WpfBasicApp02.csproj", "{3E84EE00-3DAC-49EC-8BFB-84EABAFA1CFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8359E8F-45CF-4BAC-BF6D-7EEA51043892}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8359E8F-45CF-4BAC-BF6D-7EEA51043892}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8359E8F-45CF-4BAC-BF6D-7EEA51043892}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8359E8F-45CF-4BAC-BF6D-7EEA51043892}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E84EE00-3DAC-49EC-8BFB-84EABAFA1CFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E84EE00-3DAC-49EC-8BFB-84EABAFA1CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E84EE00-3DAC-49EC-8BFB-84EABAFA1CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E84EE00-3DAC-49EC-8BFB-84EABAFA1CFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EFE9EBDA-6FE4-41AE-85B7-241D1737747D}
+	EndGlobalSection
+EndGlobal
