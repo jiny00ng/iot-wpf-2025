@@ -9,7 +9,7 @@ IoT 개발자 WPF 학습리포지토리 2025
     - 화면디자인을 XML 기반의 xaml
     
 ### WPF DB바인딩 연습
-1. 프로젝트 생성 - [소스](./day01)
+1. 프로젝트 생성 - [디자인](./day01/Day01Wpf/WpfBasicApp01/MainWindow.xaml), [소스](./day01/Day01Wpf/WpfBasicApp01/MainWindow.xaml.cs)
 2. MahApps.Metro(디자인) 라이브러리 설치
 3. 디자인 영역
     - App.xmal
@@ -85,7 +85,7 @@ IoT 개발자 WPF 학습리포지토리 2025
     <img src="./image/wpf0003.png" width="600">
 
 ### WPF MVVM 연습
-1. 프로젝트 생성 - [디자인](./day01/Day01Wpf.sln)
+1. 프로젝트 생성 - [디자인](./day01/Day01Wpf/WpfBasicApp02/View/MainWindow.xaml), [소스](./day01/Day01Wpf/WpfBasicApp02/ViewModel/MainViewModel.cs)
 2. WPF DB바인딩 연습 사용한 UI 복사
 3. Model, View, ViewModel 폴더 생성
 4. MainWindwo.xaml을 View로 이동
