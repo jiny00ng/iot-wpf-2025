@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace WpfBasicApp02.Model
+namespace WpfBasicApp02.Models
 {
     public class Book
     {
