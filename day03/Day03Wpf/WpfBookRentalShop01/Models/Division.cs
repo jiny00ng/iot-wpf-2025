@@ -16,5 +16,6 @@ namespace WpfBookRentalShop01.Models
             get => _names;
             set => SetProperty(ref _names, value);  
         }
+        public string Division { get; internal set; }
     }
 }

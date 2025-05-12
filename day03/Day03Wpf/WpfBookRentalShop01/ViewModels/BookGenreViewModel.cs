@@ -34,8 +34,6 @@ namespace WpfBookRentalShop01.ViewModels
 
         private bool _isUpdate;
 
-
-
         public BookGenreViewModel()
         {
             _isUpdate = false; // 신규 상태
