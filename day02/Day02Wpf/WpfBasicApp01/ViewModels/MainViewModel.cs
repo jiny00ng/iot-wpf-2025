@@ -19,12 +19,15 @@ namespace WpfBasicApp01.ViewModels
                 NotifyOfPropertyChange(() => Greeting); // 속성 값 바뀐 것을 알려줘야 함!
             }
         }
-               
-        public MainViewModel(IDialogCoordinator dialogCoordinator) {
+
+
+        // IDialogCoordinator는 DI로 주입 받음
+        public MainViewModel(IDialogCoordinator dialogCoordinator) 
+        {
             _dialogCoordinator = dialogCoordinator;
             Greeting = "Hello, Calibrun.Micro!";
         }
-        public async Task SayHello()
+        public async void SayHello()
         {
             Greeting = "Hi, Everyone~!!!";
             // WinForms 방식
