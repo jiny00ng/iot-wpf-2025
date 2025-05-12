@@ -6,9 +6,11 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:cal="http://caliburnmicro.com"
+        xmlns:dialogs="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:WpfBasicApp02.Views"
         mc:Ignorable="d"
-        Title="MahApps DB연동(Caliburn.Micro)" Height="350" Width="600">
+        Title="MahApps DB연동(Caliburn.Micro)" Height="350" Width="600"
+        dialogs:DialogParticipation.Register="True">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
