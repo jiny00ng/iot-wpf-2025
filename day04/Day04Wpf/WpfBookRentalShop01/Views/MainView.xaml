@@ -5,11 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:WpfBookRentalShop01.Views"
     mc:Ignorable="d"
     ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-    Title="BookRentalShop v1.0" Height="550" Width="1000">
+    Title="BookRentalShop v1.0" Height="550" Width="1000"
+    Dialog:DialogParticipation.Register="{Binding}">
 
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
