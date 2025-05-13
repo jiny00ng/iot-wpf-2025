@@ -14,12 +14,8 @@ namespace WpfBookRentalShop01.ViewModels
     {
         private readonly IDialogCoordinator dialogCoordinator;
 
-        private ObservableCollection<Book> _books;
-        public ObservableCollection<Book> Books
-        {
-            get => _books;
-            set => SetProperty(ref _books, value);
-        }
+        public ObservableCollection<Book> Books { get; set; } = new();
+        public ObservableCollection<KeyValuePair<string, string>> GenreList { get; set; } = new();
 
         private Book _selectedBook;
         public Book SelectedBook
@@ -37,6 +33,7 @@ namespace WpfBookRentalShop01.ViewModels
         public BooksViewModel(IDialogCoordinator coordinator)
         {
             dialogCoordinator = coordinator;
+            LoadGenreList();
             InitVariable();
             LoadGridFromDb();
         }
@@ -51,9 +48,35 @@ namespace WpfBookRentalShop01.ViewModels
                 Names = string.Empty,
                 ReleaseDate = DateTime.Now,
                 ISBN = string.Empty,
-                Price = 0
+                Price = 0,
+                DNames = string.Empty
             };
             _isUpdate = false;
+        }
+
+        private void LoadGenreList()
+        {
+            GenreList = new ObservableCollection<KeyValuePair<string, string>>();
+            string query = "SELECT division, names FROM divtbl";
+
+            using var conn = new MySqlConnection(Common.CONNSTR);
+            try
+            {
+                conn.Open();
+                using var cmd = new MySqlCommand(query, conn);
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string division = reader.GetString("division");
+                    string name = reader.GetString("names");
+                    GenreList.Add(new KeyValuePair<string, string>(division, name));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LOGGER.Error(ex.Message);
+            }
         }
 
         [RelayCommand]
@@ -67,32 +90,36 @@ namespace WpfBookRentalShop01.ViewModels
         {
             try
             {
-                string query = string.Empty;
+                string query;
 
-                using (MySqlConnection conn = new MySqlConnection(Common.CONNSTR))
+                using (var conn = new MySqlConnection(Common.CONNSTR))
                 {
                     conn.Open();
 
                     if (_isUpdate)
                     {
-                        query = @"UPDATE booktbl 
-                              SET author = @author,
-                                  division = @division,
-                                  names = @names,
-                                  releaseDate = @releaseDate,
-                                  isbn = @isbn,
-                                  price = @price
-                              WHERE idx = @idx";
+                        query = @"UPDATE bookstbl 
+                                  SET author = @author,
+                                      division = @division,
+                                      names = @names,
+                                      releaseDate = @releaseDate,
+                                      isbn = @isbn,
+                                      price = @price
+                                  WHERE idx = @idx";
                     }
                     else
                     {
-                        query = @"INSERT INTO booktbl 
-                              (author, division, names, releaseDate, isbn, price)
-                              VALUES 
-                              (@author, @division, @names,  @releaseDate, @isbn, @price)";
+                        query = @"INSERT INTO bookstbl 
+                                  (author, division, names, releaseDate, isbn, price)
+                                  VALUES (@author,
+                                          @division,
+                                          @names,
+                                          @releaseDate,
+                                          @isbn,
+                                          @price)";
                     }
 
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    using var cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@author", SelectedBook.Author);
                     cmd.Parameters.AddWithValue("@division", SelectedBook.Division);
                     cmd.Parameters.AddWithValue("@names", SelectedBook.Names);
@@ -128,29 +155,26 @@ namespace WpfBookRentalShop01.ViewModels
 
             try
             {
-                string query = "DELETE FROM booktbl WHERE idx = @idx";
+                string query = "DELETE FROM bookstbl WHERE idx = @idx";
 
                 using var conn = new MySqlConnection(Common.CONNSTR);
+                conn.Open();
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@idx", SelectedBook.Idx);
+
+                int resultCnt = cmd.ExecuteNonQuery();
+
+                if (resultCnt > 0)
                 {
-                    conn.Open();
-                    using var cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@idx", SelectedBook.Idx);
-
-                    int resultCnt = cmd.ExecuteNonQuery();
-
-                    if (resultCnt >0)
-                    {
-                        Common.LOGGER.Info($"도서 데이터 {SelectedBook.Idx} / {SelectedBook.Names} 삭제완료");
-                        await this.dialogCoordinator.ShowMessageAsync(this, "삭제", "삭제성공");
-                    }
-                    else
-                    {
-                        Common.LOGGER.Warn("도서 데이터 삭제 실패!");
-                        await this.dialogCoordinator.ShowMessageAsync(this, "삭제", "삭제실패!!");
-                    }
+                    Common.LOGGER.Info($"도서 데이터 {SelectedBook.Idx} / {SelectedBook.Names} 삭제완료");
+                    await dialogCoordinator.ShowMessageAsync(this, "삭제", "삭제성공");
+                }
+                else
+                {
+                    Common.LOGGER.Warn("도서 데이터 삭제 실패!");
+                    await dialogCoordinator.ShowMessageAsync(this, "삭제", "삭제실패!!");
                 }
             }
-                
             catch (Exception ex)
             {
                 await dialogCoordinator.ShowMessageAsync(this, "오류", ex.Message);
@@ -163,46 +187,42 @@ namespace WpfBookRentalShop01.ViewModels
         {
             try
             {
-                string query = "SELECT idx, author, division, names, releaseDate, isbn, price FROM booktbl";
-                ObservableCollection<Book> books = new ObservableCollection<Book>();
+                string query = @"SELECT b.Idx, b.Author, b.Division, b.Names, b.ReleaseDate, b.ISBN, b.Price,
+                                        d.Names AS dNames
+                                   FROM bookstbl AS b
+                                   JOIN divtbl AS d ON b.Division = d.Division
+                                  ORDER BY b.Idx";
 
-                using (MySqlConnection conn = new MySqlConnection(Common.CONNSTR))
+                ObservableCollection<Book> books = new();
+
+                using var conn = new MySqlConnection(Common.CONNSTR);
+                conn.Open();
+                using var cmd = new MySqlCommand(query, conn);
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    conn.Open();
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
+                    books.Add(new Book
                     {
-                        var idx = reader.GetInt32("idx");
-                        var author = reader.GetString("author");
-                        var division = reader.GetString("division");
-                        var names = reader.GetString("names");
-                        var releaseDate = reader.GetDateTime("releaseDate");
-                        var isbn = reader.GetString("isbn");
-                        var price = reader.GetInt32("price");
-
-                        books.Add(new Book
-                        {
-                            Idx = idx,
-                            Author = author,
-                            Division = division,
-                            Names = names,
-                            ReleaseDate = releaseDate,
-                            ISBN = isbn,
-                            Price = price
-                        });
-                    }
-
-                    Books = books;
+                        Idx = reader.GetInt32("Idx"),
+                        Author = reader.GetString("Author"),
+                        Division = reader.GetString("Division"),
+                        DNames = reader.GetString("dNames"),
+                        Names = reader.GetString("Names"),
+                        ReleaseDate = reader.GetDateTime("ReleaseDate"),
+                        ISBN = reader.GetString("ISBN"),
+                        Price = reader.GetInt32("Price")
+                    });
                 }
+
+                Books = books;
+                Common.LOGGER.Info("도서 데이터 로드");
             }
-                
             catch (Exception ex)
             {
+                Common.LOGGER.Error(ex.Message);
                 await dialogCoordinator.ShowMessageAsync(this, "오류", ex.Message);
             }
         }
     }
 }
-

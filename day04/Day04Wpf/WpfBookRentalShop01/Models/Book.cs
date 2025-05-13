@@ -12,7 +12,7 @@ namespace WpfBookRentalShop01.Models
         private DateTime _releaseDate;
         private string _isbn;
         private int _price;
-        private string _genreName;
+        private string _dNames;
 
         public int Idx
         {
@@ -55,11 +55,10 @@ namespace WpfBookRentalShop01.Models
             get => _price;
             set => SetProperty(ref _price, value);
         }
-
-        public string GenreName
+        public string DNames
         {
-            get => _genreName;
-            set => SetProperty(ref _genreName, value);
+            get => _dNames;
+            set => SetProperty(ref _dNames, value);
         }
     }
 }

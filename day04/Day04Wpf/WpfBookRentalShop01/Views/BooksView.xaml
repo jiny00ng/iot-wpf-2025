@@ -33,8 +33,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Idx}" Header="순번" />
                 <DataGridTextColumn Binding="{Binding Division}" Header="장르코드" Visibility="Hidden" />
-                <DataGridTextColumn Binding="{Binding GenreName}" Header="장르명" />
-                <DataGridTextColumn Binding="{Binding Title}" Header="책제목" />
+                <DataGridTextColumn Binding="{Binding DNames}" Header="장르명" />
+                <DataGridTextColumn Binding="{Binding Names}" Header="책제목" />
                 <DataGridTextColumn Binding="{Binding Author}" Header="책저자" />
                 <DataGridTextColumn Binding="{Binding ReleaseDate, StringFormat='yyyy-MM-dd'}" Header="출판일" />
                 <DataGridTextColumn Binding="{Binding ISBN}" Header="ISBN" Visibility="Hidden" />
