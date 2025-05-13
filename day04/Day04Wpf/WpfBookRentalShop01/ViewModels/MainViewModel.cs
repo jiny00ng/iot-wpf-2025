@@ -10,8 +10,8 @@ namespace WpfBookRentalShop01.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-         // MahApps.Metro 형태 다이얼로그 코디네이터
-         private readonly IDialogCoordinator dialogCoordinator;
+        // MahApps.Metro 형태 다이얼로그 코디네이터
+        private readonly IDialogCoordinator dialogCoordinator;
 
         private string _greeting;
 
@@ -39,7 +39,7 @@ namespace WpfBookRentalShop01.ViewModels
 
         public MainViewModel(IDialogCoordinator coordinator)
         {
-            this.dialogCoordinator = coordinator;   // 다이얼로그코디네이터 초기화
+            this.dialogCoordinator = coordinator; // 다이얼로그코디네이터 초기화
             Greeting = "BookRentalShop!!";
 
             Common.LOGGER.Info("책대여점 프로그램 실행!");
@@ -57,7 +57,8 @@ namespace WpfBookRentalShop01.ViewModels
             {
                 Application.Current.Shutdown();
             }
-            else {
+            else
+            {
                 return;
             }
         }
@@ -87,8 +88,33 @@ namespace WpfBookRentalShop01.ViewModels
             CurrentView = v;
             CurrentStatus = "책관리 화면입니다";
 
-            Common.LOGGER.Info("책대관리 화면 실행!");
+            Common.LOGGER.Info("책관리 실행");
+        }
 
+        [RelayCommand]
+        public void ShowMembers()
+        {
+            var vm = new MembersViewModel(Common.DIALOGCOORDINATOR);
+            var v = new MembersView
+            {
+                DataContext = vm,
+            };
+            CurrentView = v;
+            CurrentStatus = "회원관리 화면입니다";
+            Common.LOGGER.Info("회원관리 실행");
+        }
+
+        [RelayCommand]
+        public void ShowRentals()
+        {
+            var vm = new RentalsViewModel();
+            var v = new RentalsView
+            {
+                DataContext = vm,
+            };
+            CurrentView = v;
+            CurrentStatus = "대여관리 화면입니다";
+            Common.LOGGER.Info("대여관리 실행");
         }
 
         #endregion

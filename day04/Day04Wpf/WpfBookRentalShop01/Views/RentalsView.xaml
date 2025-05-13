@@ -1,5 +1,5 @@
 ﻿<UserControl 
-    x:Class="WpfBookRentalShop01.Views.BooksView"             
+    x:Class="WpfBookRentalShop01.Views.RentalsView"             
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,7 +23,7 @@
 
         <TextBlock Grid.Row="0" Grid.Column="0" FontSize="25"
                    Margin="10,0,0,0"
-                   Text="책 관리" />
+                   Text="대여 관리" />
 
         <!--  DataGrid: Book 목록 출력 -->
         <DataGrid Grid.Row="1" Grid.Column="0" Margin="5"
@@ -32,13 +32,12 @@
                   SelectedItem="{Binding SelectedBook, Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Idx}" Header="순번" />
-                <DataGridTextColumn Binding="{Binding Division}" Header="장르코드" Visibility="Hidden" />
-                <DataGridTextColumn Binding="{Binding GenreName}" Header="장르명" />
-                <DataGridTextColumn Binding="{Binding Title}" Header="책제목" />
-                <DataGridTextColumn Binding="{Binding Author}" Header="책저자" />
-                <DataGridTextColumn Binding="{Binding ReleaseDate, StringFormat='yyyy-MM-dd'}" Header="출판일" />
-                <DataGridTextColumn Binding="{Binding ISBN}" Header="ISBN" Visibility="Hidden" />
-                <DataGridTextColumn Binding="{Binding Price, StringFormat={}{0:N0}원}" Header="책가격" />
+                <DataGridTextColumn Binding="{Binding MemberIdx}" Header="회원번호" Visibility="Hidden" />
+                <DataGridTextColumn Binding="{Binding MemberNames}" Header="회원명" />
+                <DataGridTextColumn Binding="{Binding BookIdx}" Header="책번호" Visibility="Hidden" />
+                <DataGridTextColumn Binding="{Binding BookNames}" Header="책제목" />
+                <DataGridTextColumn Binding="{Binding RentalDate, StringFormat='yyyy-MM-dd'}" Header="대여일" />
+                <DataGridTextColumn Binding="{Binding RentalDate, StringFormat='yyyy-MM-dd'}" Header="반납일" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -69,32 +68,21 @@
                           ItemsSource="{Binding GenreList}" 
                           SelectedValuePath="Key"
                           DisplayMemberPath="Value"
-                          SelectedValue="{Binding SelectedBook.Division, Mode=TwoWay}"
-                          mah:TextBoxHelper.Watermark="장르 선택" />
+                          mah:TextBoxHelper.Watermark="회원" />
 
-                <!-- 책 제목 -->
-                <TextBox Grid.Row="2" Margin="3"
-                         Text="{Binding SelectedBook.Title, Mode=TwoWay}"
-                         mah:TextBoxHelper.Watermark="책제목" />
+                <ComboBox Grid.Row="2" Margin="3"
+                          ItemsSource="{Binding GenreList}" 
+                          SelectedValuePath="Key"
+                          DisplayMemberPath="Value"
+                          mah:TextBoxHelper.Watermark="책" />
 
-                <!-- 책 저자 -->
-                <TextBox Grid.Row="3" Margin="3"
-                         Text="{Binding SelectedBook.Author, Mode=TwoWay}"
-                         mah:TextBoxHelper.Watermark="책저자" />
+                <DatePicker Grid.Row="3" Margin="3"
+                         mah:TextBoxHelper.AutoWatermark="True"
+                         mah:TextBoxHelper.Watermark="대여일" />
 
-                <!-- ISBN -->
-                <TextBox Grid.Row="4" Margin="3"
-                         Text="{Binding SelectedBook.ISBN, Mode=TwoWay}"
-                         mah:TextBoxHelper.Watermark="ISBN" />
-
-                <!-- 출판일 -->
-                <DatePicker Grid.Row="5" Margin="3"
-                            SelectedDate="{Binding SelectedBook.ReleaseDate, Mode=TwoWay}"
-                            mah:TextBoxHelper.Watermark="출판일"/>
-
-                <!-- 책가격 -->
-                <TextBox Grid.Row="6" Margin="3"
-                                   mah:TextBoxHelper.Watermark="책가격" />
+                <DatePicker Grid.Row="4" Margin="3"
+                         mah:TextBoxHelper.AutoWatermark="True"
+                         mah:TextBoxHelper.Watermark="반납일" />
 
                 <!-- 버튼 영역 -->
                 <StackPanel Orientation="Horizontal" Grid.Row="7" HorizontalAlignment="Right">
