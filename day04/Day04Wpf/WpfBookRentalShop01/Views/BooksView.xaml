@@ -93,8 +93,10 @@
                             mah:TextBoxHelper.Watermark="출판일"/>
 
                 <!-- 책가격 -->
-                <TextBox Grid.Row="6" Margin="3"
-                                   mah:TextBoxHelper.Watermark="책가격" />
+                <TextBox 
+                    Grid.Row="6" Margin="3"
+                    Text="{Binding SelectedBook.Price, Mode=TwoWay}"
+                    mah:TextBoxHelper.Watermark="책가격" />
 
                 <!-- 버튼 영역 -->
                 <StackPanel Orientation="Horizontal" Grid.Row="7" HorizontalAlignment="Right">

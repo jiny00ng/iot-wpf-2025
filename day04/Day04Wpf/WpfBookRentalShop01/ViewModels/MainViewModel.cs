@@ -80,7 +80,7 @@ namespace WpfBookRentalShop01.ViewModels
         [RelayCommand]
         public void ShowBooks()
         {
-            var vm = new BooksViewModel();
+            var vm = new BooksViewModel(Common.DIALOGCOORDINATOR);
             var v = new BooksView
             {
                 DataContext = vm,
