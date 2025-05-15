@@ -362,4 +362,8 @@ https://github.com/user-attachments/assets/0689284c-f75a-4013-b0e3-3197c84342aa
     5. NuGet 패키지 - Google.Apis.YouTube.v3 설치
 
 6. 기타작업 완료
-7. 결과 화면 
+7. 결과 화면
+
+https://github.com/user-attachments/assets/45328104-c771-4a0d-9208-4a2967408617
+
+
