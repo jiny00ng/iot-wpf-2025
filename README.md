@@ -330,4 +330,29 @@ https://github.com/user-attachments/assets/0689284c-f75a-4013-b0e3-3197c84342aa
 
     <img src="./image/wpf0015.png" width="650">
 
-6. TMDB API 사용 구현
+6. 로직구현
+    1. TMDB API 사용 구현
+    2. 관련 기능 전부구현
+7. 데이터그리드 더블클릭해서 상세정보 표시
+    - NuGet 패키지에서 Microsoft.Xaml.Behaviors.Wpf 설치
+8. 텍스트박스에서 엔터시 이벤트 발생 처리
+9. 텍스트박스 한글 입력 우선 처리
+10. 실행시 텍스트박스에 포커스 가도록 처리
+
+    https://github.com/user-attachments/assets/c118f2e9-882d-4d66-8085-71e3a221ff9a
+
+## 6일차
+
+### MovieFinder 2025 (계속)
+1. 상태표시줄 시계 동작
+2. 상태표시줄 검색결과 건수 표시
+3. 로그출력 정리
+4. 즐겨찾기 DB연동...
+    1. MySQL Workbench에서 moviefinder 데이터베이스(스키마) 생성
+    2. movieitems 테이블 생성. 컬럼은 MovieItem.cs 속성과 동일
+    3. INSERT, UPDATE, DELETE 작업 
+
+    <img src="./image/wpf0016.png" width="650">
+
+5. Youtube 예고편 보기
+    
