@@ -157,7 +157,7 @@
             <Button Content="예고편 보기" Margin="5" FontSize="12"
                     Style="{StaticResource MahApps.Styles.Button}" 
                     Padding="23,5" Background="Red" Foreground="White"
-                    Command="{Binding ViewMovieTrailer}">
+                    Command="{Binding ViewMovieTrailerCommand}">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
