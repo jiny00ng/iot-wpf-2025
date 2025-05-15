@@ -16,15 +16,13 @@ namespace MovieFinder2025.ViewModels
 
         public TrailerViewModel(IDialogCoordinator coordinator, string movieTitle)
         {
-
             this.dialogCoordinator = coordinator;
-            MovieTitle = movieTitle;    // 이렇게 해야 영화 제목으로
+            MovieTitle = movieTitle; // 이렇게 해야 영화제목으로 검색가능
 
             YoutubeUri = "https://www.youtube.com";
 
             SearchYoutubeApi();
         }
-
 
         private string _movieTitle;
 
@@ -51,15 +49,15 @@ namespace MovieFinder2025.ViewModels
         }
 
         private string _youtubeUri;
-
         public string YoutubeUri
         {
             get => _youtubeUri;
             set => SetProperty(ref _youtubeUri, value);
         }
 
-
-        // 핵심 Youtube Data Api v3 호출
+        /// <summary>
+        /// 핵심 Youtube Data Api v3 호출
+        /// </summary>
         private async void SearchYoutubeApi()
         {
             await LoadDataCollection();
@@ -70,19 +68,19 @@ namespace MovieFinder2025.ViewModels
             var service = new YouTubeService(
                 new BaseClientService.Initializer()
                 {
-                    ApiKey = "AIzaSyCmEnIYaG2sLnbF7s9iRoW0scd-kpjyE58",
-                    ApplicationName = this.GetType().Name,
+                    ApiKey = "AIzaSyBB_akGVKmcfbMcxITYYEZO_3i7-X2GJmA",
+                    ApplicationName = this.GetType().ToString()
                 });
 
             var req = service.Search.List("snippet");
-            req.Q = $"{MovieTitle} 공식 예고편";   // 영화이름만 사용해서 Youtube API 검색
+            req.Q = $"{MovieTitle} 공식 예고편";  // 영화이름만 사용해서 Youtube API를 검색
             req.Order = SearchResource.ListRequest.OrderEnum.Relevance;
             req.Type = "video";
             req.MaxResults = 8;
 
             ObservableCollection<YoutubeItem> youtubeItems = new ObservableCollection<YoutubeItem>();
 
-            var res = await req.ExecuteAsync(); // Youtube API서버에 요청된 값 실행하고 결과를 리턴(비동기)
+            var res = await req.ExecuteAsync(); // Youtube API서버에 요청된값 실행하고 결과를 리턴(비동기)
             foreach (var item in res.Items)
             {
                 youtubeItems.Add(new YoutubeItem
@@ -96,8 +94,7 @@ namespace MovieFinder2025.ViewModels
             }
 
             YoutubeItems = youtubeItems;
-            Common.LOGGER.Info($"{MovieTitle}의 예고편 {YoutubeItems.Count} 조회완료!");
-
+            Common.LOGGER.Info($"{MovieTitle}의 예고편 {YoutubeItems.Count} 조회완료!!");
         }
 
         [RelayCommand]

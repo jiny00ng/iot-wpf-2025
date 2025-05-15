@@ -5,15 +5,9 @@ using MovieFinder2025.Helpers;
 using MovieFinder2025.Models;
 using MovieFinder2025.Views;
 using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Common;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Windows;
@@ -34,35 +28,35 @@ namespace MovieFinder2025.ViewModels
             PosterUri = new Uri("/No_Picture.png", UriKind.RelativeOrAbsolute);
 
             // 시계작업
-            CurrDatetTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");   // 1초가 지나기전에 표현을 위해서
+            CurrDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // 1초가 지나기전에 표현을 위해서
 
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(1);  // 1초마다 변경
+            _timer.Interval = TimeSpan.FromSeconds(1); // 1초마다 변경
             _timer.Tick += (sender, e) =>
             {
-                CurrDatetTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");  
+                CurrDateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             };
-
             _timer.Start();
         }
 
         // ViewModel 내에서만 사용
         private string _base_url = "https://image.tmdb.org/t/p/w300_and_h450_bestv2";
-        private readonly DispatcherTimer _timer;    
+        private readonly DispatcherTimer _timer;
 
         private string _currDateTime;
 
-        public string CurrDatetTime
+        public string CurrDateTime
         {
             get => _currDateTime;
             set => SetProperty(ref _currDateTime, value);
         }
 
-        private string _rearchResult;
+        private string _searchResult;
+
         public string SearchResult
         {
-            get => _rearchResult;
-            set => SetProperty(ref _rearchResult, value);
+            get => _searchResult;
+            set => SetProperty(ref _searchResult, value);
         }
 
         private string _movieName;
@@ -100,7 +94,6 @@ namespace MovieFinder2025.ViewModels
             get => _posterUri;
             set => SetProperty(ref _posterUri, value);
         }
-
 
         [RelayCommand]
         public async Task SearchMovie()
@@ -145,18 +138,18 @@ namespace MovieFinder2025.ViewModels
 
                 foreach (MovieItem movie in response.Results)
                 {
-                    //Common.LOGGER.Info($"{movie.Title}, {movie.Release_date.ToString("yyyy-MM-dd")}");
+                    // Common.LOGGER.Info($"{movie.Title}, {movie.Release_date.ToString("yyyy-MM-dd")}");
                     movieItems.Add(movie);
                 }
 
-                SearchResult = $"영화검색 건수: {response.Total_results}건";
-                Common.LOGGER.Info(MovieName + " / " + SearchResult + " 검색완료!");
+                SearchResult = $"영화검색 건수 : {response.Total_results}건";
+                Common.LOGGER.Info(MovieName + " /" + SearchResult + " 검색완료!!");
             }
             catch (Exception ex)
             {
                 await this.dialogCoordinator.ShowMessageAsync(this, "예외", ex.Message);
                 Common.LOGGER.Fatal(ex.Message);
-                SearchResult = "오류발생";
+                SearchResult = $"오류발생";
             }
 
             MovieItems = movieItems; // View에 가져갈 속성에 데이터 할당
@@ -175,7 +168,7 @@ namespace MovieFinder2025.ViewModels
                 sb.Append($"평점 : {currMovie.Vote_average.ToString("F2")}\n\n");
                 sb.Append(currMovie.Overview);
 
-                Common.LOGGER.Info("{currMovie.Title} 상세정보 확인");
+                Common.LOGGER.Info($"{currMovie.Title} 상세정보 확인");
                 await this.dialogCoordinator.ShowMessageAsync(this, currMovie.Title, sb.ToString());
             }
         }
@@ -183,22 +176,21 @@ namespace MovieFinder2025.ViewModels
         [RelayCommand]
         public async Task AddFavoriteMovies()
         {
-            //await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 추가", "즐겨찾기 추가합니다!");
+            // await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 추가", "");
             if (SelectedMovieItem == null)
             {
-                await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 추가", "추가할 영화를 선택하세요.");
+                await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기추가", "추가할 영화를 선택하세요.");
                 return;
             }
 
             try
             {
                 var query = @"INSERT INTO movieitems
-                                (id, adult, backdrop_path, original_language, original_title, overview,
-                                popularity, poster_path, release_date, title, vote_average, vote_count)
-                            VALUES
-                                (@id, @adult, @backdrop_path, @original_language, @original_title, @overview,
-                                @popularity,  @poster_path, @release_date, @title, @vote_average, @vote_count)";
-
+                                    (id, adult, backdrop_path, original_language, original_title, overview,
+                                     popularity, poster_path, release_date, title, vote_average, vote_count)
+                              VALUES
+                                    (@id, @adult, @backdrop_path, @original_language, @original_title, @overview,
+                                     @popularity,  @poster_path, @release_date, @title, @vote_average, @vote_count)";
                 using (MySqlConnection conn = new MySqlConnection(Common.CONNSTR))
                 {
                     conn.Open();
@@ -226,7 +218,7 @@ namespace MovieFinder2025.ViewModels
                     }
                     else
                     {
-                        await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 추가", "즐겨찾기 추가 실패!");
+                        await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기추가", "즐겨찾기 추가 실패!");
                     }
                 }
             }
@@ -234,7 +226,8 @@ namespace MovieFinder2025.ViewModels
             {
                 if (ex.Message.ToUpper().Contains("DUPLICATE ENTRY"))
                 {
-                    await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 추가", "이미 추가된 즐겨찾기 입니다");
+                    Common.LOGGER.Warn($"{SelectedMovieItem.Title} 추가된 영화!");
+                    await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기추가", "이미 추가된 즐겨찾기입니다.");
                 }
                 else
                 {
@@ -242,12 +235,12 @@ namespace MovieFinder2025.ViewModels
                 }
                 Common.LOGGER.Fatal(ex.Message);
             }
-
             catch (Exception ex)
             {
                 await this.dialogCoordinator.ShowMessageAsync(this, "오류", ex.Message);
                 Common.LOGGER.Fatal(ex.Message);
             }
+
         }
 
         [RelayCommand]
@@ -261,7 +254,7 @@ namespace MovieFinder2025.ViewModels
                 {
                     conn.Open();
                     var query = @"SELECT id, adult, backdrop_path, original_language, original_title, overview,
-                                          popularity, poster_path, release_date, title, vote_average, vote_count
+		                                 popularity, poster_path, release_date, title, vote_average, vote_count
                                     FROM movieitems";
                     MySqlCommand cmd = new MySqlCommand(query, conn);
                     MySqlDataReader reader = cmd.ExecuteReader();
@@ -278,7 +271,7 @@ namespace MovieFinder2025.ViewModels
                             Overview = reader.GetString("overview"),
                             Popularity = reader.GetDouble("popularity"),
                             Poster_path = reader.GetString("poster_path"),
-                            Release_date = reader.GetDateTime("Release_date"),
+                            Release_date = reader.GetDateTime("release_date"),
                             Title = reader.GetString("title"),
                             Vote_average = reader.GetDouble("vote_average"),
                             Vote_count = reader.GetInt32("vote_count"),
@@ -287,8 +280,8 @@ namespace MovieFinder2025.ViewModels
                 }
 
                 MovieItems = movieItems;
-                SearchResult = $"영화검색 건수: {MovieItems.Count}건";
-                Common.LOGGER.Info(SearchResult + " 검색완료!");
+                SearchResult = $"즐겨찾기검색 건수 : {MovieItems.Count}건";
+                Common.LOGGER.Info(SearchResult + " 검색완료!!");
             }
             catch (Exception ex)
             {
@@ -302,7 +295,7 @@ namespace MovieFinder2025.ViewModels
         {
             if (SelectedMovieItem == null)
             {
-                await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 삭제", "삭제할 영화를 선택하세요.");
+                await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기삭제", "삭제할 영화를 선택하세요.");
                 return;
             }
 
@@ -321,11 +314,11 @@ namespace MovieFinder2025.ViewModels
                     if (resultCnt > 0)
                     {
                         Common.LOGGER.Info($"{SelectedMovieItem.Title} 즐겨찾기 삭제!");
-                        await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 삭제", "즐겨찾기 삭제 성공");
+                        await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기삭제", "즐겨찾기 삭제 성공");
                     }
                     else
                     {
-                        await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기 삭제", "즐겨찾기 삭제 실패!");
+                        await this.dialogCoordinator.ShowMessageAsync(this, "즐겨찾기삭제", "즐겨찾기 삭제 실패!");
                     }
                 }
             }
@@ -335,7 +328,7 @@ namespace MovieFinder2025.ViewModels
                 Common.LOGGER.Fatal(ex.Message);
             }
 
-            await ViewFavoriteMovies();   // 삭제 후 즐겨찾기를 다시보기
+            await ViewFavoriteMovies(); // 삭제 후 즐겨찾기를 다시보기
         }
 
         [RelayCommand]
@@ -343,7 +336,7 @@ namespace MovieFinder2025.ViewModels
         {
             if (SelectedMovieItem == null)
             {
-                await this.dialogCoordinator.ShowMessageAsync(this, "예고편보기", "영화를 선택하세요!");
+                await this.dialogCoordinator.ShowMessageAsync(this, "예고편보기", "영화를 선택하세요");
                 return;
             }
 
@@ -353,7 +346,9 @@ namespace MovieFinder2025.ViewModels
             {
                 DataContext = viewModel,
             };
-            Common.LOGGER.Info($"{SelectedMovieItem.Title} 즐겨찾기 추가!");
+            view.Owner = Application.Current.MainWindow; // 부모창의 중앙에 위치
+
+            Common.LOGGER.Info($"{SelectedMovieItem.Title} 유튜브 트레일러 실행!");
             view.ShowDialog();
         }
     }

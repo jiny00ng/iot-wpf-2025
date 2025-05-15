@@ -8,10 +8,10 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:cefsharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    
+    xmlns:cefsharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
     mc:Ignorable="d"
+    ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
     Title="Youtube Trailer" Height="560" Width="900">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
@@ -40,15 +40,15 @@
                     
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding MovieItemDoubleClickCommand}" />
+                    <i:InvokeCommandAction Command="{Binding YoutubeDoubleClickCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="썸네일" Width="100">
+                    <GridViewColumn Header="썸네일" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Height="57" Stretch="Fill" Source="{Binding Thumbnail}" />
+                                <Image Stretch="Fill" Source="{Binding Thumbnail}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -60,7 +60,7 @@
         </ListView>
 
         <Grid Grid.Row="1" Grid.Column="1" Margin="10">
-            <cefsharp:ChromiumWebBrowser Address="https://www.youtube.com"/>
+            <cefsharp:ChromiumWebBrowser Address="{Binding YoutubeUri}"/>
         </Grid>
     </Grid>
 </mah:MetroWindow>
