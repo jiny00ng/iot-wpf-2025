@@ -374,6 +374,9 @@ https://github.com/user-attachments/assets/0689284c-f75a-4013-b0e3-3197c84342aa
     - CommunityToolkit.Mvvm
     - MahApps.Metro / MahApps.Metro.IconPacks
     - Newtonsoft.Json
-    - CefSharp.Wpf.NETCore()
+    - CefSharp.Wpf.NETCore (플랫폼 x64로 변경!)
     - NLog
 4. MVVM 초기화
+5. UI 디자인 및 구현
+
+    https://github.com/user-attachments/assets/afbb89f4-659a-4d92-8565-0a78d8dde575
