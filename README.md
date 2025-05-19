@@ -438,7 +438,10 @@ https://github.com/user-attachments/assets/0689284c-f75a-4013-b0e3-3197c84342aa
     - CONNECT
 5. VS Code에서 [MqttPub](./day08/Pythons/MqttPub.py) 파일 생성
 
-    
+
+https://github.com/user-attachments/assets/68fc6a82-8cf8-476a-b36a-d3bcfbf3ff5c
+
+
 
 ### 스마트홈 프로젝트 시작
 1. 화면 UI 변경
