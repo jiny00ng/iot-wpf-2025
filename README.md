@@ -478,3 +478,12 @@ https://github.com/user-attachments/assets/68fc6a82-8cf8-476a-b36a-d3bcfbf3ff5c
     - MahApps.Metro.IconPacks
     - Newtonsoft.Json
     - MQTTnet
+    - MySql.Data
+
+4. DB서버에 접속자 정보 확인 쿼리
+    ```sql
+    select * from information_schema.processlist limit 10;  -- 데이터가 10건 이상이면 limit 10은 삭제
+    ```
+
+5. WPF MVVM 전체 구현
+6. MqttPub.py와 Publish된 IoT데이터 WPF에서 Subscribe 예제
