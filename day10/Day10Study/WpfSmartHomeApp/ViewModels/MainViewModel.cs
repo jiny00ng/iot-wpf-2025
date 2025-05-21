@@ -31,6 +31,8 @@ namespace WpfSmartHomeApp.ViewModels
 
         // readonly는 생성자에서만 값을 할당. 그외는 불가
         private readonly DispatcherTimer _timer;
+        // 로그용 타이머
+        private readonly DispatcherTimer _logTimer;
         // MQTT용 변수들
         private string TOPIC;
         private IMqttClient mqttClient;
@@ -178,8 +180,8 @@ namespace WpfSmartHomeApp.ViewModels
             IsAirConOn = data.F == "ON" ? true : false;
             AirConResult = data.F == "ON" ? "Aircon On!" : "Aircon Off";
 
-            IsRainOn = data.R <= 300 ? true : false;
-            RainResult = data.R <= 300 ? "Raining" : "No Raining";
+            IsRainOn = data.R <= 350 ? true : false;
+            RainResult = data.R <= 350 ? "Raining" : "No Raining";
 
             return Task.CompletedTask;  // 구독이 종료됨을 알려주는 리턴문
         }
